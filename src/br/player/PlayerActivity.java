@@ -1,8 +1,9 @@
 package br.player;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +12,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 public class PlayerActivity extends Activity implements OnClickListener {
 
@@ -26,6 +27,10 @@ public class PlayerActivity extends Activity implements OnClickListener {
 	private Button buttonStopPlay;
 	
 	private Intent intent;
+	
+	private ProgressBar progressBar;
+	
+	private Thread progressBarThread;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +71,14 @@ public class PlayerActivity extends Activity implements OnClickListener {
 		});
 
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
-		buttonPlay.setBackgroundColor(Color.rgb(161, 140, 148));
 		buttonPlay.setOnClickListener(this);
 
 		buttonStopPlay = (Button) findViewById(R.id.buttonStopPlay);
-		buttonStopPlay.setBackgroundColor(Color.rgb(201, 24, 24));
 		buttonStopPlay.setOnClickListener(this);
+		
+		//TODO
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		progressBar.setVisibility(View.GONE);
 		
 	}
 	
@@ -82,6 +89,11 @@ public class PlayerActivity extends Activity implements OnClickListener {
 			Log.i(TAG, "onClick: starting srvice");
 			nomeRadio = spinner.getSelectedItem().toString();
 			intent.putExtra("radioName", nomeRadio);
+			
+			if(isPlayerServiceRunning()){
+				stopService(intent);
+			}
+			
 			startService(intent);
 			break;
 		case R.id.buttonStopPlay:
@@ -90,5 +102,15 @@ public class PlayerActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
-
+	
+	
+	private boolean isPlayerServiceRunning() {
+	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	        if ("br.player.ServicePlayer".equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 }

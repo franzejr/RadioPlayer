@@ -2,7 +2,7 @@ package br.player;
 
 public enum RadioEnum {
 	FRANCE_INFO("France-Info[Paris]","http://mp3.live.tv-radio.com/franceinfo/all/franceinfo.mp3"), 
-	ARL("AR[Langon]","http://mp3.live.tv-radio.com/arl/all/arl.mp3"),
+	ARL("ARL[Langon]","http://mp3.live.tv-radio.com/arl/all/arl.mp3"),
 	PHARE_FM_LIVE("Phare FM Live[Mulhouse]","http://str30.creacast.com/pharefmlive"),
 	CONTACT_FM("Contact FM [Lille]","http://radio-contact.ice.infomaniak.ch:80/radio-contact-high"),
 	RADIO_CAMPUS_GRENOBLE("Radio Campus Grenoble [Grenoble]","http://live.campusgrenoble.org:9000/rcg112"),
